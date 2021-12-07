@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import { ThemeContext } from '../contexts/ThemeContext';
+
 class TodoList extends Component {
+  static contextType = ThemeContext;
   render() {
+    const { isDarkTheme, darkTheme, lightTheme } = this.context;
+    const theme = isDarkTheme ? darkTheme : lightTheme;
+
     const { todoContainer, item } = styles;
 
     return (
-      <View style={todoContainer}>
-        <Text style={item}>Plan the family trip</Text>
-        <Text style={item}>Go shopping for dinner</Text>
-        <Text style={item}>Go for a walk</Text>
+      <View style={[todoContainer, theme]}>
+        <Text style={[item, theme]}>Plan the family trip</Text>
+        <Text style={[item, theme]}>Go shopping for dinner</Text>
+        <Text style={[item, theme]}>Go for a walk</Text>
       </View>
     );
   }
