@@ -10,6 +10,7 @@ import {
 
 import { ThemeContext } from '../contexts/ThemeContext';
 import { TodoListContext } from '../contexts/TodoListContext';
+import { TodoListContextWithReducer } from '../contexts/TodoListContextWithReducer';
 
 const TodoList = () => {
   const [todo, setTodo] = useState('');
@@ -17,19 +18,22 @@ const TodoList = () => {
     useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
 
-  const { todos, addTodo, removeTodo } = useContext(TodoListContext);
+  // const { todos, addTodo, removeTodo } = useContext(TodoListContext);
+  const { todos, dispatch } = useContext(TodoListContextWithReducer);
 
   const handleChange = (text: string) => {
     setTodo(text);
   };
 
   const handleAddTodoPress = () => {
-    addTodo(todo);
+    // addTodo(todo);
+    dispatch({ type: 'ADD_TODO', text: todo });
     setTodo('');
   };
 
   const handleRemoveTodo = (id: string) => {
-    removeTodo(id);
+    // removeTodo(id);
+    dispatch({ type: 'REMOVE_TODO', id });
   };
 
   const { todoContainer, listItem, buttonContainer, buttonText, input } =

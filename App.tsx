@@ -5,7 +5,8 @@ import Navbar from './src/components/Navbar';
 import TodoList from './src/components/TodoList';
 import ThemeContextProvider from './src/contexts/ThemeContext';
 import AuthContextProvider from './src/contexts/AuthContext';
-import TodoListContextProvider from './src/contexts/TodoListContext';
+// import TodoListContextProvider from './src/contexts/TodoListContext';
+import TodoListContextProvider from './src/contexts/TodoListContextWithReducer';
 
 const App = () => {
   return (
