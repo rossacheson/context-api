@@ -5,14 +5,17 @@ import Navbar from './src/components/Navbar';
 import TodoList from './src/components/TodoList';
 import ThemeContextProvider from './src/contexts/ThemeContext';
 import AuthContextProvider from './src/contexts/AuthContext';
+import TodoListContextProvider from './src/contexts/TodoListContext';
 
 const App = () => {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <AuthContextProvider>
         <ThemeContextProvider>
           <Navbar />
-          <TodoList />
+          <TodoListContextProvider>
+            <TodoList />
+          </TodoListContextProvider>
         </ThemeContextProvider>
       </AuthContextProvider>
     </View>

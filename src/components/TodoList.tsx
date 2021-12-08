@@ -1,20 +1,58 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useContext, useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+} from 'react-native';
 
 import { ThemeContext } from '../contexts/ThemeContext';
+import { TodoListContext } from '../contexts/TodoListContext';
 
 const TodoList = () => {
+  const [todo, setTodo] = useState('');
   const { isDarkTheme, darkTheme, lightTheme, changeTheme } =
     useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
 
-  const { todoContainer, item, buttonContainer, buttonText } = styles;
+  const { todos, addTodo } = useContext(TodoListContext);
+
+  const handleChange = (text: string) => {
+    setTodo(text);
+  };
+
+  const handleAddTodoPress = () => {
+    addTodo(todo);
+    setTodo('');
+  };
+
+  const { todoContainer, listItem, buttonContainer, buttonText, input } =
+    styles;
 
   return (
     <View style={[todoContainer, theme]}>
-      <Text style={[item, theme]}>Plan the family trip</Text>
-      <Text style={[item, theme]}>Go shopping for dinner</Text>
-      <Text style={[item, theme]}>Go for a walk</Text>
+      {todos.length ? (
+        <FlatList
+          data={todos}
+          renderItem={({ item }) => {
+            return <Text style={[listItem, theme]}>{item.text}</Text>;
+          }}
+          keyExtractor={(todo) => todo.id}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : (
+        <Text style={[listItem, theme]}>You have no todos</Text>
+      )}
+      <TextInput
+        value={todo}
+        onChangeText={(text) => handleChange(text)}
+        style={input}
+      />
+      <TouchableOpacity style={buttonContainer} onPress={handleAddTodoPress}>
+        <Text style={buttonText}>Add Todo</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={buttonContainer} onPress={changeTheme}>
         <Text style={buttonText}>Change Theme</Text>
       </TouchableOpacity>
@@ -27,8 +65,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'dimgrey',
     justifyContent: 'space-around',
     alignItems: 'center',
+    flex: 1,
   },
-  item: {
+  listItem: {
     color: 'white',
     fontSize: 18,
     paddingVertical: 10,
@@ -39,10 +78,20 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 15,
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
+  },
+  input: {
+    width: '100%',
+    backgroundColor: 'white',
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginVertical: 15,
+    padding: 5,
   },
 });
 
