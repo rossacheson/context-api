@@ -3,6 +3,7 @@ import React, { createContext, useState, FunctionComponent } from 'react';
 interface ITodoListContext {
   todos: ITodo[];
   addTodo: (todo: string) => void;
+  removeTodo: (id: string) => void;
 }
 interface ITodo {
   id: string;
@@ -22,8 +23,12 @@ const TodoListContextProvider: FunctionComponent = ({ children }) => {
     setTodos([...todos, { text: todo, id: `${Math.random()}` }]);
   };
 
+  const removeTodo = (id: string) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+  };
+
   return (
-    <TodoListContext.Provider value={{ todos, addTodo }}>
+    <TodoListContext.Provider value={{ todos, addTodo, removeTodo }}>
       {children}
     </TodoListContext.Provider>
   );

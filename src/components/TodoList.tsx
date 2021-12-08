@@ -17,7 +17,7 @@ const TodoList = () => {
     useContext(ThemeContext);
   const theme = isDarkTheme ? darkTheme : lightTheme;
 
-  const { todos, addTodo } = useContext(TodoListContext);
+  const { todos, addTodo, removeTodo } = useContext(TodoListContext);
 
   const handleChange = (text: string) => {
     setTodo(text);
@@ -26,6 +26,10 @@ const TodoList = () => {
   const handleAddTodoPress = () => {
     addTodo(todo);
     setTodo('');
+  };
+
+  const handleRemoveTodo = (id: string) => {
+    removeTodo(id);
   };
 
   const { todoContainer, listItem, buttonContainer, buttonText, input } =
@@ -37,7 +41,11 @@ const TodoList = () => {
         <FlatList
           data={todos}
           renderItem={({ item }) => {
-            return <Text style={[listItem, theme]}>{item.text}</Text>;
+            return (
+              <TouchableOpacity onPress={() => handleRemoveTodo(item.id)}>
+                <Text style={[listItem, theme]}>{item.text}</Text>
+              </TouchableOpacity>
+            );
           }}
           keyExtractor={(todo) => todo.id}
           showsVerticalScrollIndicator={false}
