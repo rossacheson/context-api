@@ -1,30 +1,50 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { ThemeContext } from '../contexts/ThemeContext';
+import { AuthContext } from '../contexts/AuthContext';
 
 class Navbar extends Component {
   render() {
-    const { headerContainer, headerText, headerTabContainer, headerTab } =
-      styles;
+    const {
+      headerContainer,
+      headerText,
+      headerTabContainer,
+      headerTab,
+      loginButtonText,
+    } = styles;
 
     return (
-      <ThemeContext.Consumer>
-        {(context: any) => {
-          const { isDarkTheme, darkTheme, lightTheme } = context;
-          const theme = isDarkTheme ? darkTheme : lightTheme;
+      <AuthContext.Consumer>
+        {(authContext: any) => {
           return (
-            <View style={[headerContainer, theme]}>
-              <Text style={[headerText, theme]}>OakAcademy</Text>
-              <View style={headerTabContainer}>
-                <Text style={headerTab}>Overview</Text>
-                <Text style={headerTab}>Contact</Text>
-                <Text style={headerTab}>Support</Text>
-              </View>
-            </View>
+            <ThemeContext.Consumer>
+              {(themeContext: any) => {
+                const { isLoggedIn, changeAuthStatus } = authContext;
+
+                const { isDarkTheme, darkTheme, lightTheme } = themeContext;
+                const theme = isDarkTheme ? darkTheme : lightTheme;
+
+                return (
+                  <View style={[headerContainer, theme]}>
+                    <Text style={[headerText, theme]}>OakAcademy</Text>
+                    <TouchableOpacity onPress={changeAuthStatus}>
+                      <Text style={[loginButtonText, theme]}>
+                        {isLoggedIn ? 'Log Out' : 'Log In'}
+                      </Text>
+                    </TouchableOpacity>
+                    <View style={headerTabContainer}>
+                      <Text style={headerTab}>Overview</Text>
+                      <Text style={headerTab}>Contact</Text>
+                      <Text style={headerTab}>Support</Text>
+                    </View>
+                  </View>
+                );
+              }}
+            </ThemeContext.Consumer>
           );
         }}
-      </ThemeContext.Consumer>
+      </AuthContext.Consumer>
     );
   }
 }
@@ -54,6 +74,11 @@ const styles = StyleSheet.create({
   headerTab: {
     fontSize: 22,
     paddingVertical: 10,
+  },
+  loginButtonText: {
+    marginTop: 15,
+    fontSize: 24,
+    color: 'white',
   },
 });
 
