@@ -1,6 +1,13 @@
 import React, { createContext } from 'react';
 
-export const ThemeContext = createContext({});
+interface IThemeContext {
+  isDarkTheme: boolean;
+  lightTheme: any;
+  darkTheme: any;
+  changeTheme: () => void;
+}
+
+export const ThemeContext = createContext({} as IThemeContext);
 
 class ThemeContextProvider extends React.Component {
   state = {
