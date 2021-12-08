@@ -1,6 +1,11 @@
 import React, { createContext } from 'react';
 
-export const AuthContext = createContext({});
+interface IAuthContext {
+  isLoggedIn: boolean;
+  changeAuthStatus: () => void;
+}
+
+export const AuthContext = createContext({} as IAuthContext);
 
 class AuthContextProvider extends React.Component {
   state = {
