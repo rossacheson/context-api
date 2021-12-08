@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, useState, FunctionComponent } from 'react';
 
 interface IAuthContext {
   isLoggedIn: boolean;
@@ -7,24 +7,18 @@ interface IAuthContext {
 
 export const AuthContext = createContext({} as IAuthContext);
 
-class AuthContextProvider extends React.Component {
-  state = {
-    isLoggedIn: false,
+const AuthContextProvider: FunctionComponent = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const changeAuthStatus = () => {
+    setIsLoggedIn(!isLoggedIn);
   };
 
-  changeAuthStatus = () => {
-    this.setState({ isLoggedIn: !this.state.isLoggedIn });
-  };
-
-  render() {
-    return (
-      <AuthContext.Provider
-        value={{ ...this.state, changeAuthStatus: this.changeAuthStatus }}
-      >
-        {this.props.children}
-      </AuthContext.Provider>
-    );
-  }
-}
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, changeAuthStatus }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export default AuthContextProvider;
